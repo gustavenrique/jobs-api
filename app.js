@@ -13,7 +13,7 @@ const helmet = require('helmet')
 // swagger
 const swagger = require('swagger-ui-express')
 const yaml = require('yamljs')
-const documentation = yaml.load('./swagger.yml')
+const documentation = yaml.load('./assets/swagger.yml')
 
 const jobRouter = require('./routes/jobs')
 const authRouter = require('./routes/auth')
@@ -22,6 +22,7 @@ const notFoundMiddleware = require('./middleware/not-found');
 const errorHandlerMiddleware = require('./middleware/error-handler');
 
 app.use(express.json());
+app.use('/assets', express.static('assets'))
 
 app.set('trust proxy', 1)
 app.use(rateLimit({
@@ -49,7 +50,7 @@ app.use(errorHandlerMiddleware);
     const PORT = process.env.PORT || 3000;
 
     app.listen(PORT, () =>
-      console.log(`Server listening on http://localhost:${PORT}`)
+      console.log(`Server listening on ${process.env.port ?  `port ${PORT}` : `http://localhost:${PORT}`}`)
     );
   } catch (error) {
     console.error(error);
